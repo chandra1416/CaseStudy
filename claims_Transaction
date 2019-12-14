@@ -4,3 +4,14 @@ cur=con.cursor()
 <----Table creation part---->
 tab_t='''CREATE TABLE IF NOT EXISTS CLAIMS_Transaction(TransactionId INT,PolicyId BIGINT,PolicyNumber INT,PolicYHolderName VARCHAR(20),PolicyStartDate DATE,PolicyExpirationDate VARCHAR(15),PolicyType VARCHAR(25),ClaimID INT,ClaimType VARCHAR(20),ClaimApplyDate VARCHAR(15),ClaimServiceDate VARCHAR(15),ClaimStatus VARCHAR(10),ClaimCompletionDate VARCHAR(15))'''
 cur.execute(tab_t)
+def addDailyData(file):
+	with open(file,'r') as d:
+		daily_data=list(csv.reader(d,delimiter='|'))
+		index=1
+		while index<len(daily_data):
+			in_qry="INSERT INTO CLAIMS_Transaction(TransactionId,PolicyId,PolicyNumber,PolicYHolderName,PolicyStartDate,PolicyExpirationDate,PolicyType,ClaimID,ClaimType,ClaimApplyDate,ClaimServiceDate,ClaimStatus,ClaimCompletionDate)values{}"
+			sql=in_qry.format(tuple(daily_data[index]))
+			cur.execute(sql)
+			index +=1
+		cur.execute("commit")
+    
