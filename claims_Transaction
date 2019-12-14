@@ -14,4 +14,7 @@ def addDailyData(file):
 			cur.execute(sql)
 			index +=1
 		cur.execute("commit")
-    
+'''----------Passing Files------'''
+addDailyData('Day1.csv')
+addDailyData('Day2.csv')
+addDailyData('Day3.csv')		
