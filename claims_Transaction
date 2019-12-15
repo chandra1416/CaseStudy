@@ -12,15 +12,38 @@ def date_convert(x):
 	#d=datetime.datetime.strftime(h,format)
 	return h
 def addDailyData(file):
-	with open(file,'r') as d:
-		daily_data=list(csv.reader(d,delimiter='|'))
-		index=1
-		while index<len(daily_data):
-			in_qry="INSERT INTO CLAIMS_Transaction(TransactionId,PolicyId,PolicyNumber,PolicYHolderName,PolicyStartDate,PolicyExpirationDate,PolicyType,ClaimID,ClaimType,ClaimApplyDate,ClaimServiceDate,ClaimStatus,ClaimCompletionDate)values{}"
-			sql=in_qry.format(tuple(daily_data[index]))
-			cur.execute(sql)
-			index +=1
-		cur.execute("commit")
+	try:
+		val = []
+		with open(file,'r') as c:
+			daily_data = csv.DictReader(c, delimiter='|')
+			for row in daily_data:
+				#if date is not present replace with null and if date is present as string convert  to date format
+				# PolicyStartDate checking
+				if len(row['PolicyStartDate']) == 0:
+					PolicyStartDate = None
+				else:
+					PolicyStartDate = date_convert(row['PolicyStartDate'])
+				# PolicyExpirationDate checking
+				if len(row['PolicyExpirationDate'] )== 0:
+					PolicyExpirationDate = None
+				else:
+					PolicyExpirationDate = date_convert(row['PolicyExpirationDate'])
+				# ClaimApplyDate checking
+				if len(row['ClaimApplyDate']) == 0:
+					ClaimApplyDate = None
+				else:
+					ClaimApplyDate = date_convert(row['ClaimApplyDate'])
+				# ClaimServiceDate checking	
+				if len(row['ClaimServiceDate']) == 0:
+					ClaimServiceDate = None
+				else:
+					ClaimServiceDate = date_convert(row['ClaimServiceDate'])
+				# ClaimCompletionDate checking
+				if len(row['ClaimCompletionDate']) == 0:
+					ClaimCompletionDate = None
+				else:
+					ClaimCompletionDate = date_convert(row['ClaimCompletionDate'])
+					
 '''----------Passing Files------'''
 addDailyData('Day1.csv')
 addDailyData('Day2.csv')
