@@ -46,3 +46,7 @@ def addDailyData(file):
 	except Exception as e:
 		print("Error : ", str(e))
 		con.rollback()
+'''----------Passing Files------'''
+addDailyData('Day1.csv')
+addDailyData('Day2.csv')
+addDailyData('Day3.csv')
