@@ -1,0 +1,8 @@
+Requirements:
+
+-> From the daliy file, read the data and store it in 2 tables - > POLICY,  CLAIMS_Transaction, CLAIMS
+-> There should be proper primary key, foreign key relationship between the tables.
+-> The transaction table should hold all the transaction details (all day data)
+-> CLAIMS table should contain only the latest status for each Policy & Claim combination.
+
+
