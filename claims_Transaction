@@ -43,7 +43,13 @@ def addDailyData(file):
 					ClaimCompletionDate = None
 				else:
 					ClaimCompletionDate = date_convert(row['ClaimCompletionDate'])
-					
+				#creating list for insert multiple records
+				val.append((row['TransactionId'], row['PolicyId'], row['PolicyNumber'], row['PolicYHolderName'], PolicyStartDate, PolicyExpirationDate, row['PolicyType'], row['ClaimID'], row['ClaimType'], ClaimApplyDate, ClaimServiceDate, row['ClaimStatus'], ClaimCompletionDate))
+		in_qry= '''INSERT INTO CLAIMS_Transaction(TransactionId,PolicyId,PolicyNumber,PolicYHolderName,PolicyStartDate,PolicyExpirationDate,PolicyType,ClaimID,ClaimType,ClaimApplyDate,ClaimServiceDate,ClaimStatus,ClaimCompletionDate)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'''
+		cur.executemany(in_qry, val)
+		#commit changes
+		con.commit()	
 '''----------Passing Files------'''
 addDailyData('Day1.csv')
 addDailyData('Day2.csv')
