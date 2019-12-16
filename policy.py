@@ -2,7 +2,7 @@ import csv
 import datetime
 import mysql.connector
 from mysql.connector import Error
-con=mysql.connector.connect(host="localhost",username="chandra",password="@chennai1",database='abc')
+con=mysql.connector.connect(host="localhost",username="chandra",password="@chennai1",database='healthcare')
 cur=con.cursor()
 #Function for Converting string to date
 def date_convert(x):
