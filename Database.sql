@@ -12,3 +12,63 @@ CREATE TABLE IF NOT EXISTS claims(PolicyId BIGINT  ,PolicyNumber INT ,ClaimID IN
 
 --Create CLAIMS_Transaction Table
 CREATE TABLE IF NOT EXISTS CLAIMS_Transaction(TransactionId INT NOT NULL,PolicyId BIGINT NOT NULL,PolicyNumber INT NOT NULL,PolicYHolderName VARCHAR(20)NOT NULL,PolicyStartDate DATE NOT NULL,PolicyExpirationDate DATE NOT NULL,PolicyType VARCHAR(25)NOT NULL,ClaimID INT NOT NULL,ClaimType VARCHAR(20)NOT NULL,ClaimApplyDate DATE NOT NULL,ClaimServiceDate DATE,ClaimStatus VARCHAR(10)NOT NULL,ClaimCompletionDate DATE);
+
+--DML Operations
+----------------------------------------------------------------------
+--POLICY Table INSERT query 
+INSERT ignore INTO POLICY(
+  PolicyId,PolicyNumber,
+  PolicYHolderName,
+  PolicyStartDate,
+  PolicyExpirationDate,
+  PolicyType
+)
+select
+  PolicyId,
+  PolicyNumber,
+  PolicYHolderName,
+  PolicyStartDate,
+  PolicyExpirationDate,
+  PolicyType 
+from 
+  claims_transaction;
+-----------------------------------------------------------------------
+--CLAIMS Table INSERT query 
+INSERT INTO CLAIMS(
+	PolicyId,ClaimID,
+	ClaimApplyDate,
+	ClaimServiceDate,
+	ClaimStatus,
+	ClaimCompletionDate
+) 
+WITH CTE AS (
+select 
+	PolicyId,
+    ClaimID,
+    ClaimApplyDate,
+    ClaimServiceDate,
+    ClaimStatus,
+    ClaimCompletionDate,
+    ROW_NUMBER() OVER(
+    partition by 
+		PolicyId,
+        claimId
+	ORDER BY 
+    ClaimApplyDate desc,
+    ClaimCompletionDate desc,
+    ClaimStatus desc
+    ) row_num 
+    FROM
+		claims_transaction
+)
+select 
+	PolicyId,
+    ClaimID,
+    ClaimApplyDate,
+    ClaimServiceDate,
+    ClaimStatus,
+    ClaimCompletionDate
+from 
+	CTE 
+where 
+	row_num =1;
