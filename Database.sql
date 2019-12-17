@@ -1,5 +1,5 @@
 -- Database Creatation Mysql Query
-CREATE DATABASE IF NOT EXISTS Healthcare;
+CREATE DATABASE IF NOT EXISTS Dec17;
 
 -- Change Database as current database Mysql Query 
 USE DATABASE Healthcare ;
